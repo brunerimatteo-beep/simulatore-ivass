@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Domanda } from '../types'
-import { haUsatoTrial } from '../lib/trial'
+import { haUsatoTrial, segnaTrialUsato } from '../lib/trial'
 
 const USER_ID_TEST = '00000000-0000-0000-0000-000000000001'
 
@@ -21,8 +21,6 @@ const MATERIE_RIASSICURATIVO = [
   { codice: 'i', nome: 'Tecnica riassicurativa' },
 ]
 
-
-
 export default function Allenamento() {
   const navigate = useNavigate()
   const [tipo, setTipo] = useState<'assicurativo' | 'riassicurativo'>('assicurativo')
@@ -34,28 +32,12 @@ export default function Allenamento() {
 
   const materie = tipo === 'assicurativo' ? MATERIE_ASSICURATIVO : MATERIE_RIASSICURATIVO
 
-  // Aggiorna max disponibili quando cambia tipo o materia
+  // Reset materia quando cambia tipo
   useEffect(() => {
-    async function caricaConteggio() {
-      let query = supabase
-        .from('domande')
-        .select('id', { count: 'exact', head: true })
-        .eq('tipo', tipo)
-        .eq('anno', 2025)
-
-      if (materiaSelezionata !== 'tutte') {
-        query = query.eq('materia_codice', materiaSelezionata)
-      }
-
-      const { count } = await query
-      const max = Math.min(count || 0, 70)
-      setMaxDisponibili(max)
-      if (nDomande > max) setNDomande(max)
-    }
-    caricaConteggio()
     setMateriaSelezionata('tutte')
   }, [tipo])
 
+  // Aggiorna conteggio quando cambia tipo o materia
   useEffect(() => {
     async function caricaConteggio() {
       let query = supabase
@@ -69,12 +51,12 @@ export default function Allenamento() {
       }
 
       const { count } = await query
-      const max = Math.min(count || 0, 70)
+      const max = count || 0
       setMaxDisponibili(max)
-      if (nDomande > max) setNDomande(Math.max(5, max))
+      setNDomande(max)
     }
     caricaConteggio()
-  }, [materiaSelezionata])
+  }, [tipo, materiaSelezionata])
 
   async function avviaAllenamento() {
     if (haUsatoTrial()) {
@@ -100,7 +82,6 @@ export default function Allenamento() {
       if (error) throw error
       if (!data || data.length === 0) throw new Error('Nessuna domanda trovata')
 
-      // Estrai N domande casuali
       const estratte = [...data]
         .sort(() => Math.random() - 0.5)
         .slice(0, nDomande) as Domanda[]
@@ -122,7 +103,7 @@ export default function Allenamento() {
 
       if (errSessione) throw errSessione
 
-      
+      segnaTrialUsato()
       navigate(`/esame/${sessione.id}`, {
         state: { domande: estratte, minuti: 0, isAllenamento: true }
       })
@@ -226,24 +207,32 @@ export default function Allenamento() {
             <label className="block text-sm font-bold text-gray-700 mb-1">
               Numero di domande: <span className="text-blue-600 text-lg">{nDomande}</span>
             </label>
-            <p className="text-xs text-gray-400 mb-3">{maxDisponibili} domande disponibili per questa selezione</p>
+            <p className="text-xs text-gray-400 mb-3">
+              {maxDisponibili} domande disponibili per questa selezione
+            </p>
             <input
               type="range"
-              min={5}
-              max={maxDisponibili || 70}
+              min={1}
+              max={maxDisponibili || 1}
               value={nDomande}
               onChange={e => setNDomande(Number(e.target.value))}
               className="w-full accent-blue-600"
             />
             <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>5</span>
-              <span>{maxDisponibili || 70}</span>
+              <span>1</span>
+              <span>{maxDisponibili}</span>
             </div>
           </div>
 
           {/* Riepilogo */}
           <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-600">
-            <p>📋 <strong>{nDomande} domande</strong> · {tipo} · {materiaSelezionata === 'tutte' ? 'tutte le materie' : materie.find(m => m.codice === materiaSelezionata)?.nome} · Nessun timer</p>
+            <p>
+              📋 <strong>{nDomande} domande</strong> · {tipo} · {
+                materiaSelezionata === 'tutte'
+                  ? 'tutte le materie'
+                  : materie.find(m => m.codice === materiaSelezionata)?.nome
+              } · Nessun timer
+            </p>
           </div>
 
           {/* Bottone avvia */}
