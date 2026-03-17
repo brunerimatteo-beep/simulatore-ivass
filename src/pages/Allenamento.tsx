@@ -232,23 +232,40 @@ export default function Allenamento() {
           )}
 
           {/* Numero domande */}
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-3">
-              Numero di domande: <span className="text-blue-600 text-lg">{nDomande}</span>
-            </label>
-            <input
-              type="range"
-              min={1}
-              max={maxDisponibili || 1}
-              value={nDomande}
-              onChange={e => setNDomande(Number(e.target.value))}
-              className="w-full accent-blue-600"
-            />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>1</span>
-              <span>{maxDisponibili}</span>
-            </div>
-          </div>
+<div>
+  <label className="block text-sm font-bold text-gray-700 mb-3">
+    Numero di domande
+  </label>
+  <div className="flex items-center gap-3 mb-3">
+    <input
+      type="number"
+      inputMode="numeric"
+      pattern="[0-9]*"
+      min={1}
+      max={maxDisponibili || 1}
+      value={nDomande}
+      onChange={e => {
+        const val = Math.min(Math.max(1, Number(e.target.value)), maxDisponibili)
+        setNDomande(val)
+      }}
+      className="w-24 text-center text-2xl font-black text-blue-600 border-2 border-blue-200 rounded-xl py-2 focus:outline-none focus:border-blue-500"
+    />
+    <div className="flex-1">
+      <input
+        type="range"
+        min={1}
+        max={maxDisponibili || 1}
+        value={nDomande}
+        onChange={e => setNDomande(Number(e.target.value))}
+        className="w-full accent-blue-600"
+      />
+      <div className="flex justify-between text-xs text-gray-400 mt-1">
+        <span>1</span>
+        <span>{maxDisponibili}</span>
+      </div>
+    </div>
+  </div>
+</div>
 
           {/* Riepilogo */}
           <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-600">
