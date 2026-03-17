@@ -73,8 +73,9 @@ export default function EsameAttivo() {
     const corrette = tutteLeRisposte.filter(r => r.is_corretta).length
     const errate = tutteLeRisposte.filter(r => r.risposta_data !== null && !r.is_corretta).length
     const omesse = tutteLeRisposte.filter(r => r.risposta_data === null).length
-    const punteggio = Math.round((corrette / totale) * 100)
-    const superata = punteggio >= 60
+    const punteggioTotale = corrette * 1 + errate * (-0.5)
+    const punteggio = Math.round((punteggioTotale / totale) * 100)
+    const superata = punteggioTotale >= totale * 0.6
     const tempoUsato = minuti * 60 - secondiRimasti
 
     await supabase.from('sessioni').update({
