@@ -1,7 +1,8 @@
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import type { Domanda } from '../types'
+import { segnaTrialUsato } from '../lib/trial'
 
-export default function Risultato() {
+export default function Risultato() { segnaTrialUsato()
   const navigate = useNavigate()
   useParams()
   const location = useLocation()

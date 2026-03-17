@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Domanda } from '../types'
-import { haUsatoTrial, segnaTrialUsato } from '../lib/trial'
+import { haUsatoTrial } from '../lib/trial'
 
 const USER_ID_TEST = '00000000-0000-0000-0000-000000000001'
 
@@ -122,7 +122,7 @@ export default function Allenamento() {
 
       if (errSessione) throw errSessione
 
-      segnaTrialUsato()
+      
       navigate(`/esame/${sessione.id}`, {
         state: { domande: estratte, minuti: 0, isAllenamento: true }
       })

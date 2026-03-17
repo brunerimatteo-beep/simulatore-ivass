@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useState } from 'react'
 import type { TipoEsame, Domanda } from '../types'
-import { haUsatoTrial, segnaTrialUsato } from '../lib/trial'
+import { haUsatoTrial } from '../lib/trial'
 
 const USER_ID_TEST = '00000000-0000-0000-0000-000000000001'
 
@@ -163,7 +163,7 @@ export default function Simulazione() {
 
       if (errSessione) throw errSessione
 
-      segnaTrialUsato()
+      
       navigate(`/esame/${sessione.id}`, { state: { domande, minuti: MODALITA.find(m => m.id === tipo)?.minuti || 75 } })
 
     } catch (e: any) {
