@@ -21,39 +21,46 @@ const MATERIE_RIASSICURATIVO = [
   { codice: 'i', nome: 'Tecnica riassicurativa' },
 ]
 
+type TipoAllenamento = 'assicurativo' | 'riassicurativo' | 'completo'
+
 export default function Allenamento() {
   const navigate = useNavigate()
-  const [tipo, setTipo] = useState<'assicurativo' | 'riassicurativo' | 'completo'>('assicurativo')
+  const [tipo, setTipo] = useState<TipoAllenamento>('assicurativo')
   const [materiaSelezionata, setMateriaSelezionata] = useState<string>('tutte')
   const [nDomande, setNDomande] = useState(20)
   const [loading, setLoading] = useState(false)
   const [errore, setErrore] = useState<string | null>(null)
   const [maxDisponibili, setMaxDisponibili] = useState(0)
 
-  const materie = tipo === 'assicurativo' ? MATERIE_ASSICURATIVO : MATERIE_RIASSICURATIVO
+  const materie = tipo === 'riassicurativo' ? MATERIE_RIASSICURATIVO : MATERIE_ASSICURATIVO
 
-  // Reset materia quando cambia tipo
   useEffect(() => {
     setMateriaSelezionata('tutte')
   }, [tipo])
 
-  // Aggiorna conteggio quando cambia tipo o materia
   useEffect(() => {
     async function caricaConteggio() {
-      let query = supabase
-        .from('domande')
-        .select('id', { count: 'exact', head: true })
-        .eq('tipo', tipo)
-        .eq('anno', 2025)
-
-      if (materiaSelezionata !== 'tutte') {
-        query = query.eq('materia_codice', materiaSelezionata)
+      let count = 0
+      if (tipo === 'completo') {
+        const { count: c } = await supabase
+          .from('domande')
+          .select('id', { count: 'exact', head: true })
+          .eq('anno', 2025)
+        count = c || 0
+      } else {
+        let query = supabase
+          .from('domande')
+          .select('id', { count: 'exact', head: true })
+          .eq('tipo', tipo)
+          .eq('anno', 2025)
+        if (materiaSelezionata !== 'tutte') {
+          query = query.eq('materia_codice', materiaSelezionata)
+        }
+        const { count: c } = await query
+        count = c || 0
       }
-
-      const { count } = await query
-      const max = count || 0
-      setMaxDisponibili(max)
-      setNDomande(max)
+      setMaxDisponibili(count)
+      setNDomande(count)
     }
     caricaConteggio()
   }, [tipo, materiaSelezionata])
@@ -63,22 +70,33 @@ export default function Allenamento() {
       navigate('/paywall')
       return
     }
-
     setLoading(true)
     setErrore(null)
-
     try {
-      let query = supabase
-        .from('domande')
-        .select('*')
-        .eq('tipo', tipo)
-        .eq('anno', 2025)
+      let data: any[] = []
+      let error: any = null
 
-      if (materiaSelezionata !== 'tutte') {
-        query = query.eq('materia_codice', materiaSelezionata)
+      if (tipo === 'completo') {
+        const { data: d, error: e } = await supabase
+          .from('domande')
+          .select('*')
+          .eq('anno', 2025)
+        data = d || []
+        error = e
+      } else {
+        let query = supabase
+          .from('domande')
+          .select('*')
+          .eq('tipo', tipo)
+          .eq('anno', 2025)
+        if (materiaSelezionata !== 'tutte') {
+          query = query.eq('materia_codice', materiaSelezionata)
+        }
+        const { data: d, error: e } = await query
+        data = d || []
+        error = e
       }
 
-      const { data, error } = await query
       if (error) throw error
       if (!data || data.length === 0) throw new Error('Nessuna domanda trovata')
 
@@ -107,7 +125,6 @@ export default function Allenamento() {
       navigate(`/esame/${sessione.id}`, {
         state: { domande: estratte, minuti: 0, isAllenamento: true }
       })
-
     } catch (e: any) {
       console.error('Errore allenamento:', e)
       setErrore(e.message || 'Errore sconosciuto')
@@ -149,72 +166,74 @@ export default function Allenamento() {
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-3">Tipo di esame</label>
             <div className="grid grid-cols-3 gap-3">
-  <button
-    onClick={() => setTipo('assicurativo')}
-    className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
-      tipo === 'assicurativo'
-        ? 'border-blue-500 bg-blue-50 text-blue-700'
-        : 'border-gray-200 text-gray-600 hover:border-gray-300'
-    }`}
-  >
-    🏛️ Assicurativo
-  </button>
-  <button
-    onClick={() => setTipo('riassicurativo')}
-    className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
-      tipo === 'riassicurativo'
-        ? 'border-purple-500 bg-purple-50 text-purple-700'
-        : 'border-gray-200 text-gray-600 hover:border-gray-300'
-    }`}
-  >
-    📊 Riassicurativo
-  </button>
-  <button
-    onClick={() => setTipo('completo')}
-    className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
-      tipo === 'completo'
-        ? 'border-green-500 bg-green-50 text-green-700'
-        : 'border-gray-200 text-gray-600 hover:border-gray-300'
-    }`}
-  >
-    🎯 Completo
-  </button>
-</div>
-          </div>
-
-          {/* Materia */}
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-3">Materia</label>
-            <div className="grid grid-cols-1 gap-2">
               <button
-                onClick={() => setMateriaSelezionata('tutte')}
-                className={`py-2 px-4 rounded-lg border-2 text-sm text-left transition-all ${
-                  materiaSelezionata === 'tutte'
-                    ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium'
+                onClick={() => setTipo('assicurativo')}
+                className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
+                  tipo === 'assicurativo'
+                    ? 'border-blue-500 bg-blue-50 text-blue-700'
                     : 'border-gray-200 text-gray-600 hover:border-gray-300'
                 }`}
               >
-                📚 Tutte le materie
+                🏛️ Assicurativo
               </button>
-              {materie.map(m => (
+              <button
+                onClick={() => setTipo('riassicurativo')}
+                className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
+                  tipo === 'riassicurativo'
+                    ? 'border-purple-500 bg-purple-50 text-purple-700'
+                    : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                }`}
+              >
+                📊 Riassicurativo
+              </button>
+              <button
+                onClick={() => setTipo('completo')}
+                className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
+                  tipo === 'completo'
+                    ? 'border-green-500 bg-green-50 text-green-700'
+                    : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                }`}
+              >
+                🎯 Completo
+              </button>
+            </div>
+          </div>
+
+          {/* Materia — nascosta per completo */}
+          {tipo !== 'completo' && (
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-3">Materia</label>
+              <div className="grid grid-cols-1 gap-2">
                 <button
-                  key={m.codice}
-                  onClick={() => setMateriaSelezionata(m.codice)}
+                  onClick={() => setMateriaSelezionata('tutte')}
                   className={`py-2 px-4 rounded-lg border-2 text-sm text-left transition-all ${
-                    materiaSelezionata === m.codice
+                    materiaSelezionata === 'tutte'
                       ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium'
                       : 'border-gray-200 text-gray-600 hover:border-gray-300'
                   }`}
                 >
-                  {m.nome}
+                  📚 Tutte le materie
                 </button>
-              ))}
+                {materie.map(m => (
+                  <button
+                    key={m.codice}
+                    onClick={() => setMateriaSelezionata(m.codice)}
+                    className={`py-2 px-4 rounded-lg border-2 text-sm text-left transition-all ${
+                      materiaSelezionata === m.codice
+                        ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium'
+                        : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                    }`}
+                  >
+                    {m.nome}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Numero domande */}
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">
+            <label className="block text-sm font-bold text-gray-700 mb-3">
               Numero di domande: <span className="text-blue-600 text-lg">{nDomande}</span>
             </label>
             <input
@@ -235,7 +254,9 @@ export default function Allenamento() {
           <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-600">
             <p>
               📋 <strong>{nDomande} domande</strong> · {tipo} · {
-                materiaSelezionata === 'tutte'
+                tipo === 'completo'
+                  ? 'tutte le materie'
+                  : materiaSelezionata === 'tutte'
                   ? 'tutte le materie'
                   : materie.find(m => m.codice === materiaSelezionata)?.nome
               } · Nessun timer
