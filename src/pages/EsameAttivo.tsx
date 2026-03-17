@@ -112,7 +112,7 @@ export default function EsameAttivo() {
   }
 
   function abbandona() {
-    if (confirm('Sei sicuro? La sessione verrà abbandonata e il trial non verrà consumato.')) {
+    if (confirm('Sei sicuro di voler uscire? Il progresso andrà perso e il trial non verrà consumato.')) {
       navigate('/simulazione')
     }
   }
@@ -122,7 +122,10 @@ export default function EsameAttivo() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600 mb-4">Sessione non trovata o scaduta.</p>
-          <button onClick={() => navigate('/simulazione')} className="bg-blue-600 text-white px-6 py-2 rounded-lg">
+          <button
+            onClick={() => navigate('/simulazione')}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg"
+          >
             Torna alla selezione
           </button>
         </div>
@@ -134,51 +137,70 @@ export default function EsameAttivo() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <header className="bg-white border-b border-gray-200 px-6 py-3 sticky top-0 z-10">
+
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-10">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={abbandona}
-                className="text-xs text-gray-400 hover:text-gray-600 underline"
-              >
-                ← Abbandona
-              </button>
-              <span className="text-sm font-medium text-gray-600">
-                Domanda <span className="text-blue-600 font-bold">{indice + 1}</span> di {totale}
-              </span>
-            </div>
+
+            {/* Bottone esci — grande e chiaro */}
+            <button
+              onClick={abbandona}
+              className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5M12 5l-7 7 7 7"/>
+              </svg>
+              Esci
+            </button>
+
+            {/* Contatore domanda */}
+            <span className="text-sm font-medium text-gray-500">
+              <span className="text-blue-600 font-bold">{indice + 1}</span> / {totale}
+            </span>
+
+            {/* Timer o badge allenamento */}
             {!isAllenamento && (
-              <span className={`text-sm font-bold px-3 py-1 rounded-full ${timerWarning ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-gray-100 text-gray-700'}`}>
+              <span className={`text-sm font-bold px-3 py-1.5 rounded-lg ${
+                timerWarning
+                  ? 'bg-red-100 text-red-600 animate-pulse'
+                  : 'bg-gray-100 text-gray-700'
+              }`}>
                 ⏱ {formatTime(secondiRimasti)}
               </span>
             )}
             {isAllenamento && (
-              <span className="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">
-                🏋️ Allenamento
+              <span className="text-xs bg-orange-100 text-orange-700 px-3 py-1.5 rounded-lg font-medium">
+                Allenamento
               </span>
             )}
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+
+          {/* Barra progresso */}
+          <div className="w-full bg-gray-200 rounded-full h-1.5">
             <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              className="bg-blue-600 h-1.5 rounded-full transition-all duration-300"
               style={{ width: `${((indice + 1) / totale) * 100}%` }}
             />
           </div>
         </div>
       </header>
 
-      <main className="flex-1 max-w-3xl mx-auto px-6 py-8 w-full">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-          <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">
+      {/* Contenuto */}
+      <main className="flex-1 max-w-3xl mx-auto px-4 py-6 w-full">
+
+        {/* Domanda */}
+        <div className="bg-white rounded-xl border border-gray-100 p-5 mb-5">
+          <div className="text-xs text-gray-400 mb-2 uppercase tracking-wide font-medium">
             {domandaCorrente.materia}
           </div>
-          <p className="text-gray-900 text-lg font-medium leading-relaxed">
+          <p className="text-gray-900 text-base font-medium leading-relaxed">
             {domandaCorrente.domanda}
           </p>
         </div>
 
-        <div className="space-y-3 mb-8">
+        {/* Opzioni */}
+        <div className="space-y-3 mb-6">
           {opzioni.map((opzione, i) => {
             const lettera = ['A', 'B', 'C'][i]
             const selezionata = sceltaCorrente === opzione
@@ -192,8 +214,10 @@ export default function EsameAttivo() {
                     : 'border-gray-200 bg-white hover:border-gray-300 text-gray-800'
                 }`}
               >
-                <span className={`inline-block w-7 h-7 rounded-full text-sm font-bold mr-3 text-center leading-7 ${
-                  selezionata ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'
+                <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold mr-3 flex-shrink-0 ${
+                  selezionata
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 text-gray-600'
                 }`}>
                   {lettera}
                 </span>
@@ -203,37 +227,45 @@ export default function EsameAttivo() {
           })}
         </div>
 
-        <div className="flex gap-3">
+        {/* Azioni */}
+        <div className="flex gap-3 mb-8">
           <button
             onClick={salta}
-            className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors"
+            className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors text-sm"
           >
-            Salta →
+            Salta
           </button>
           <button
             onClick={confermaeVaiAvanti}
-            className="flex-2 px-8 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
+            className="flex-[2] py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors text-sm"
           >
             {indice + 1 === totale ? 'Termina esame' : 'Conferma e continua →'}
           </button>
         </div>
 
-        <div className="mt-8">
-          <p className="text-xs text-gray-400 mb-2">Navigazione rapida</p>
+        {/* Navigazione rapida */}
+        <div>
+          <p className="text-xs text-gray-400 mb-2 font-medium">Navigazione rapida</p>
           <div className="flex flex-wrap gap-2">
-            {domande.map((_, i) => {
-              const risposta = risposteDate[domande[i].id]
-              const stato = risposta === undefined ? 'vuota' : risposta === null ? 'saltata' : 'risposta'
+            {domande.map((d, i) => {
+              const risposta = risposteDate[d.id]
+              const stato = risposta === undefined
+                ? 'vuota'
+                : risposta === null
+                ? 'saltata'
+                : 'risposta'
               return (
                 <button
                   key={i}
                   onClick={() => setIndice(i)}
-                  className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${
-                    i === indice ? 'ring-2 ring-blue-500' : ''
+                  className={`w-9 h-9 rounded-lg text-xs font-bold transition-colors ${
+                    i === indice ? 'ring-2 ring-blue-500 ring-offset-1' : ''
                   } ${
-                    stato === 'risposta' ? 'bg-blue-500 text-white' :
-                    stato === 'saltata' ? 'bg-gray-300 text-gray-600' :
-                    'bg-gray-100 text-gray-500'
+                    stato === 'risposta'
+                      ? 'bg-blue-500 text-white'
+                      : stato === 'saltata'
+                      ? 'bg-gray-300 text-gray-600'
+                      : 'bg-gray-100 text-gray-500'
                   }`}
                 >
                   {i + 1}
@@ -242,6 +274,7 @@ export default function EsameAttivo() {
             })}
           </div>
         </div>
+
       </main>
     </div>
   )
