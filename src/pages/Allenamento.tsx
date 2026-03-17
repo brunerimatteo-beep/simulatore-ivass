@@ -23,7 +23,7 @@ const MATERIE_RIASSICURATIVO = [
 
 export default function Allenamento() {
   const navigate = useNavigate()
-  const [tipo, setTipo] = useState<'assicurativo' | 'riassicurativo'>('assicurativo')
+  const [tipo, setTipo] = useState<'assicurativo' | 'riassicurativo' | 'completo'>('assicurativo')
   const [materiaSelezionata, setMateriaSelezionata] = useState<string>('tutte')
   const [nDomande, setNDomande] = useState(20)
   const [loading, setLoading] = useState(false)
@@ -148,28 +148,38 @@ export default function Allenamento() {
           {/* Tipo */}
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-3">Tipo di esame</label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => setTipo('assicurativo')}
-                className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
-                  tipo === 'assicurativo'
-                    ? 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                }`}
-              >
-                🏛️ Assicurativo
-              </button>
-              <button
-                onClick={() => setTipo('riassicurativo')}
-                className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
-                  tipo === 'riassicurativo'
-                    ? 'border-purple-500 bg-purple-50 text-purple-700'
-                    : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                }`}
-              >
-                📊 Riassicurativo
-              </button>
-            </div>
+            <div className="grid grid-cols-3 gap-3">
+  <button
+    onClick={() => setTipo('assicurativo')}
+    className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
+      tipo === 'assicurativo'
+        ? 'border-blue-500 bg-blue-50 text-blue-700'
+        : 'border-gray-200 text-gray-600 hover:border-gray-300'
+    }`}
+  >
+    🏛️ Assicurativo
+  </button>
+  <button
+    onClick={() => setTipo('riassicurativo')}
+    className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
+      tipo === 'riassicurativo'
+        ? 'border-purple-500 bg-purple-50 text-purple-700'
+        : 'border-gray-200 text-gray-600 hover:border-gray-300'
+    }`}
+  >
+    📊 Riassicurativo
+  </button>
+  <button
+    onClick={() => setTipo('completo')}
+    className={`py-3 rounded-xl border-2 font-medium text-sm transition-all ${
+      tipo === 'completo'
+        ? 'border-green-500 bg-green-50 text-green-700'
+        : 'border-gray-200 text-gray-600 hover:border-gray-300'
+    }`}
+  >
+    🎯 Completo
+  </button>
+</div>
           </div>
 
           {/* Materia */}
