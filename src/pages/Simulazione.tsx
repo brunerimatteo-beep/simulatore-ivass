@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useState } from 'react'
 import type { TipoEsame, Domanda } from '../types'
-import { haUsatoTrial } from '../lib/trial'
+import { haUsatoTrial, puoSimulare } from '../lib/trial'
 
 const USER_ID_TEST = '00000000-0000-0000-0000-000000000001'
 
@@ -118,10 +118,17 @@ export default function Simulazione() {
   const [errore, setErrore] = useState<string | null>(null)
 
   async function avviaSimulazione(tipo: string, nDomande: number) {
-    if (haUsatoTrial()) {
-      navigate('/paywall')
-      return
-    }
+    // Prima
+if (haUsatoTrial()) {
+  navigate('/paywall')
+  return
+}
+
+// Dopo
+if (!puoSimulare()) {
+  navigate('/paywall')
+  return
+}
 
     setLoading(tipo)
     setErrore(null)

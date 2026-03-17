@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Domanda } from '../types'
-import { haUsatoTrial, segnaTrialUsato } from '../lib/trial'
+import { haUsatoTrial, segnaTrialUsato, puoSimulare } from '../lib/trial'
 
 const USER_ID_TEST = '00000000-0000-0000-0000-000000000001'
 
@@ -66,7 +66,7 @@ export default function Allenamento() {
   }, [tipo, materiaSelezionata])
 
   async function avviaAllenamento() {
-    if (haUsatoTrial()) {
+    if (!puoSimulare()) {
       navigate('/paywall')
       return
     }
@@ -137,13 +137,22 @@ export default function Allenamento() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <button
-            onClick={() => navigate('/simulazione')}
-            className="text-blue-600 font-semibold hover:underline"
-          >
-            ← Torna alla selezione
-          </button>
-          {haUsatoTrial() && (
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate('/simulazione')}
+              className="text-sm text-gray-500 hover:text-gray-700"
+            >
+              ← Torna alla selezione
+            </button>
+            <span className="text-gray-300">|</span>
+            <button
+              onClick={() => navigate('/')}
+              className="text-blue-700 font-bold hover:underline text-base"
+            >
+              SimulatoreIVASS
+            </button>
+          </div>
+          {haUsatoTrial() && !puoSimulare() && (
             <span className="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">
               Trial esaurito — €9,99 per continuare
             </span>
@@ -167,9 +176,7 @@ export default function Allenamento() {
 
           {/* Tipo */}
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-3">
-              Tipo di esame
-            </label>
+            <label className="block text-sm font-bold text-gray-700 mb-3">Tipo di esame</label>
             <div className="grid grid-cols-3 gap-2">
               {([
                 { id: 'assicurativo', label: '🏛️ Assicurativo', color: 'blue' },
@@ -196,9 +203,7 @@ export default function Allenamento() {
           {/* Materia — nascosta per completo */}
           {tipo !== 'completo' && (
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-3">
-                Materia
-              </label>
+              <label className="block text-sm font-bold text-gray-700 mb-3">Materia</label>
               <div className="grid grid-cols-1 gap-2">
                 <button
                   onClick={() => setMateriaSelezionata('tutte')}
@@ -232,8 +237,6 @@ export default function Allenamento() {
             <label className="block text-sm font-bold text-gray-700 mb-4">
               Numero di domande
             </label>
-
-            {/* Input numerico grande e centrato */}
             <div className="flex justify-center mb-5">
               <div className="text-center">
                 <input
@@ -251,13 +254,9 @@ export default function Allenamento() {
                   }}
                   className="w-28 text-center text-4xl font-black text-blue-600 border-2 border-blue-200 rounded-2xl py-3 focus:outline-none focus:border-blue-500 bg-blue-50"
                 />
-                <div className="text-xs text-gray-400 mt-1">
-                  max {maxDisponibili}
-                </div>
+                <div className="text-xs text-gray-400 mt-1">max {maxDisponibili}</div>
               </div>
             </div>
-
-            {/* Slider */}
             <input
               type="range"
               min={1}
