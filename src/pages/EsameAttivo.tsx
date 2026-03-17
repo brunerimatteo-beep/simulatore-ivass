@@ -34,7 +34,6 @@ export default function EsameAttivo() {
   const domandaCorrente = domande[indice]
   const totale = domande.length
 
-  // Genera opzioni mischiate per la domanda corrente
   useEffect(() => {
     if (!domandaCorrente) return
     const opts = [
@@ -46,7 +45,6 @@ export default function EsameAttivo() {
     setSceltaCorrente(risposteDate[domandaCorrente.id] ?? null)
   }, [indice, domande])
 
-  // Timer
   useEffect(() => {
     if (isAllenamento || terminato) return
     if (secondiRimasti <= 0) {
@@ -113,6 +111,12 @@ export default function EsameAttivo() {
     }
   }
 
+  function abbandona() {
+    if (confirm('Sei sicuro? La sessione verrà abbandonata e il trial non verrà consumato.')) {
+      navigate('/simulazione')
+    }
+  }
+
   if (domande.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -130,13 +134,20 @@ export default function EsameAttivo() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header con progresso e timer */}
       <header className="bg-white border-b border-gray-200 px-6 py-3 sticky top-0 z-10">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">
-              Domanda <span className="text-blue-600 font-bold">{indice + 1}</span> di {totale}
-            </span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={abbandona}
+                className="text-xs text-gray-400 hover:text-gray-600 underline"
+              >
+                ← Abbandona
+              </button>
+              <span className="text-sm font-medium text-gray-600">
+                Domanda <span className="text-blue-600 font-bold">{indice + 1}</span> di {totale}
+              </span>
+            </div>
             {!isAllenamento && (
               <span className={`text-sm font-bold px-3 py-1 rounded-full ${timerWarning ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-gray-100 text-gray-700'}`}>
                 ⏱ {formatTime(secondiRimasti)}
@@ -148,7 +159,6 @@ export default function EsameAttivo() {
               </span>
             )}
           </div>
-          {/* Barra progresso */}
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
               className="bg-blue-600 h-2 rounded-full transition-all duration-300"
@@ -158,7 +168,6 @@ export default function EsameAttivo() {
         </div>
       </header>
 
-      {/* Domanda */}
       <main className="flex-1 max-w-3xl mx-auto px-6 py-8 w-full">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
           <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">
@@ -169,7 +178,6 @@ export default function EsameAttivo() {
           </p>
         </div>
 
-        {/* Opzioni risposta */}
         <div className="space-y-3 mb-8">
           {opzioni.map((opzione, i) => {
             const lettera = ['A', 'B', 'C'][i]
@@ -195,7 +203,6 @@ export default function EsameAttivo() {
           })}
         </div>
 
-        {/* Bottoni azione */}
         <div className="flex gap-3">
           <button
             onClick={salta}
@@ -211,7 +218,6 @@ export default function EsameAttivo() {
           </button>
         </div>
 
-        {/* Navigazione domande già risposte */}
         <div className="mt-8">
           <p className="text-xs text-gray-400 mb-2">Navigazione rapida</p>
           <div className="flex flex-wrap gap-2">
