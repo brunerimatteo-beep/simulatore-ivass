@@ -207,9 +207,6 @@ export default function Allenamento() {
             <label className="block text-sm font-bold text-gray-700 mb-1">
               Numero di domande: <span className="text-blue-600 text-lg">{nDomande}</span>
             </label>
-            <p className="text-xs text-gray-400 mb-3">
-              {maxDisponibili} domande disponibili per questa selezione
-            </p>
             <input
               type="range"
               min={1}
