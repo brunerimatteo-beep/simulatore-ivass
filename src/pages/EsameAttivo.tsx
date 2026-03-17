@@ -27,7 +27,7 @@ export default function EsameAttivo() {
   const [indice, setIndice] = useState(0)
   const [risposteDate, setRisposteDate] = useState<Record<number, string | null>>({})
   const [sceltaCorrente, setSceltaCorrente] = useState<string | null>(null)
-  const [secondiRimasti, setSecondiRimasti] = useState(10)
+  const [secondiRimasti, setSecondiRimasti] = useState(minuti * 60)
   const [terminato, setTerminato] = useState(false)
   const [opzioni, setOpzioni] = useState<string[]>([])
 
