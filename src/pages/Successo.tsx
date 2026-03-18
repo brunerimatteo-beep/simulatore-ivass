@@ -1,13 +1,40 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { segnaAccessoPagato } from '../lib/trial'
+import { supabase } from '../lib/supabase'
 
 export default function Successo() {
   const navigate = useNavigate()
+  const [checking, setChecking] = useState(true)
 
   useEffect(() => {
-    segnaAccessoPagato()
+    async function setup() {
+      segnaAccessoPagato()
+
+      // Se l'utente è loggato, aggiorna anche Supabase
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        await supabase
+          .from('profiles')
+          .update({ paid: true, paid_at: new Date().toISOString() })
+          .eq('id', session.user.id)
+      }
+
+      setChecking(false)
+    }
+    setup()
   }, [])
+
+  if (checking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-4">⏳</div>
+          <p className="text-gray-600">Attivazione accesso in corso...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">

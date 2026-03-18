@@ -3,6 +3,8 @@ import { supabase } from '../lib/supabase'
 import { useState } from 'react'
 import type { TipoEsame, Domanda } from '../types'
 import { haUsatoTrial, puoSimulare } from '../lib/trial'
+import { useAuth } from '../hooks/useAuth'
+import { usePaid } from '../hooks/usePaid'
 
 const USER_ID_TEST = '00000000-0000-0000-0000-000000000001'
 
@@ -113,6 +115,8 @@ function estraiStratificate(domande: Domanda[], totale: number): Domanda[] {
 
 
 export default function Simulazione() {
+  const { user } = useAuth()
+  const { paid } = usePaid()
   const navigate = useNavigate()
   const [loading, setLoading] = useState<string | null>(null)
   const [errore, setErrore] = useState<string | null>(null)
@@ -125,7 +129,7 @@ if (haUsatoTrial()) {
 }
 
 // Dopo
-if (!puoSimulare()) {
+if (!puoSimulare() && !paid) {
   navigate('/paywall')
   return
 }
@@ -156,7 +160,7 @@ if (!puoSimulare()) {
       const { data: sessione, error: errSessione } = await supabase
         .from('sessioni')
         .insert({
-          user_id: USER_ID_TEST,
+          user_id: user?.id ?? USER_ID_TEST,
           anno: 2025,
           modulo: tipo,
           stato: 'in_corso',
