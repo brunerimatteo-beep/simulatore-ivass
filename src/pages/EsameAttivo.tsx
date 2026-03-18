@@ -17,7 +17,7 @@ function formatTime(sec: number): string {
 }
 
 export default function EsameAttivo() {
-  const { user } = useAuth()
+  const { user: authUser } = useAuth()
   const { sessioneId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
@@ -63,7 +63,7 @@ export default function EsameAttivo() {
 
     const tutteLeRisposte = domande.map(d => ({
       sessione_id: sessioneId,
-      user_id: USER_ID_TEST,
+      user_id: authUser?.id ?? USER_ID_TEST,
       domanda_id: d.id,
       risposta_data: risposteDate[d.id] ?? null,
       is_corretta: risposteDate[d.id] === d.risposta_corretta,
