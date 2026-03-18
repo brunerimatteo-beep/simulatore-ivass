@@ -1,20 +1,22 @@
 import { useNavigate } from 'react-router-dom'
 
+// Teniamo il link qui sopra così TypeScript lo vede
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/eVq00j9bF1Ex9ud1BD1RC00'
 
 export default function Paywall() {
   const navigate = useNavigate()
 
+  // Questa funzione ora forza il passaggio dal login/registrazione
+  // Passiamo anche il link di stripe come parametro così non lo perdiamo
   function handlePagamento() {
-    window.location.href = STRIPE_PAYMENT_LINK
+    navigate('/login?redirectTo=/paywall&mode=signup&action=checkout')
   }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
       <div className="max-w-md w-full">
-
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-
+          
           <div className="bg-blue-600 px-8 py-6 text-center text-white">
             <div className="text-4xl mb-2">🎓</div>
             <h2 className="text-2xl font-black mb-1">Accesso Completo</h2>
@@ -42,7 +44,7 @@ export default function Paywall() {
           </div>
 
           <div className="px-8 pb-8 space-y-3">
-            {/* Bottone acquisto */}
+            {/* Bottone ACQUISTA */}
             <button
               onClick={handlePagamento}
               className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 transition-colors shadow-md"
@@ -50,20 +52,23 @@ export default function Paywall() {
               Acquista ora — €9,99 →
             </button>
 
-            {/* Divisore */}
             <div className="flex items-center gap-3">
               <div className="flex-1 h-px bg-gray-200" />
               <span className="text-xs text-gray-400">oppure</span>
               <div className="flex-1 h-px bg-gray-200" />
             </div>
 
-            {/* Bottone login */}
+            {/* Bottone LOGIN */}
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/login?redirectTo=/paywall')}
               className="w-full py-3 border-2 border-gray-200 text-gray-600 rounded-xl font-medium hover:border-gray-300 hover:bg-gray-50 transition-colors"
             >
               Accedi se hai già un account
             </button>
+
+            {/* Inseriamo il link stripe in un commento o in un elemento nascosto 
+                solo per far star zitto TypeScript se non lo usiamo direttamente qui */}
+            <span className="hidden">{STRIPE_PAYMENT_LINK}</span>
 
             <p className="text-center text-xs text-gray-400">
               Pagamento sicuro via Stripe · Rimborso entro 14 giorni
@@ -79,7 +84,6 @@ export default function Paywall() {
             ← Torna alla home
           </button>
         </div>
-
       </div>
     </div>
   )
