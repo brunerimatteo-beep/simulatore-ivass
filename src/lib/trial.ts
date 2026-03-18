@@ -33,3 +33,6 @@ export function navigaHome(navigate: (path: string) => void) {
 export function puoSimulare(): boolean {
   return !haUsatoTrial() || haPagato()
 }
+export function isUserPaid(user: any): boolean {
+  return haPagato() || (user?.user_metadata?.paid === true)
+}

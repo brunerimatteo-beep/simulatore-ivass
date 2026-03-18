@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Domanda } from '../types'
+import { useAuth } from '../hooks/useAuth'
 
 const USER_ID_TEST = '00000000-0000-0000-0000-000000000001'
 
@@ -16,6 +17,7 @@ function formatTime(sec: number): string {
 }
 
 export default function EsameAttivo() {
+  const { user } = useAuth()
   const { sessioneId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_eVq00j9bF1Ex9ud1BD1RC00'
+
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/eVq00j9bF1Ex9ud1BD1RC00'
 
 export default function Paywall() {
   const navigate = useNavigate()
@@ -40,14 +41,31 @@ export default function Paywall() {
             ))}
           </div>
 
-          <div className="px-8 pb-8">
+          <div className="px-8 pb-8 space-y-3">
+            {/* Bottone acquisto */}
             <button
               onClick={handlePagamento}
               className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 transition-colors shadow-md"
             >
               Acquista ora — €9,99 →
             </button>
-            <p className="text-center text-xs text-gray-400 mt-3">
+
+            {/* Divisore */}
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-px bg-gray-200" />
+              <span className="text-xs text-gray-400">oppure</span>
+              <div className="flex-1 h-px bg-gray-200" />
+            </div>
+
+            {/* Bottone login */}
+            <button
+              onClick={() => navigate('/login')}
+              className="w-full py-3 border-2 border-gray-200 text-gray-600 rounded-xl font-medium hover:border-gray-300 hover:bg-gray-50 transition-colors"
+            >
+              Accedi se hai già un account
+            </button>
+
+            <p className="text-center text-xs text-gray-400">
               Pagamento sicuro via Stripe · Rimborso entro 14 giorni
             </p>
           </div>

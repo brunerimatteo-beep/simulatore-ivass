@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Domanda } from '../types'
-import { haUsatoTrial, segnaTrialUsato, puoSimulare } from '../lib/trial'
+import { haUsatoTrial, puoSimulare } from '../lib/trial'
+import { useAuth } from '../hooks/useAuth'
+
 
 const USER_ID_TEST = '00000000-0000-0000-0000-000000000001'
 
@@ -24,6 +26,7 @@ const MATERIE_RIASSICURATIVO = [
 type TipoAllenamento = 'assicurativo' | 'riassicurativo' | 'completo'
 
 export default function Allenamento() {
+  const { user } = useAuth()
   const navigate = useNavigate()
   const [tipo, setTipo] = useState<TipoAllenamento>('assicurativo')
   const [materiaSelezionata, setMateriaSelezionata] = useState<string>('tutte')
@@ -107,7 +110,7 @@ export default function Allenamento() {
       const { data: sessione, error: errSessione } = await supabase
         .from('sessioni')
         .insert({
-          user_id: USER_ID_TEST,
+          user_id: user?.id ?? USER_ID_TEST,
           anno: 2025,
           modulo: tipo,
           stato: 'in_corso',
@@ -121,7 +124,7 @@ export default function Allenamento() {
 
       if (errSessione) throw errSessione
 
-      segnaTrialUsato()
+      
       navigate(`/esame/${sessione.id}`, {
         state: { domande: estratte, minuti: 0, isAllenamento: true }
       })

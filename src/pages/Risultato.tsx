@@ -110,13 +110,13 @@ export default function Risultato() {
         }`}>
           {giaPassed ? (
             <p className="text-green-700 font-medium text-sm text-center">
-              ✅ Soglia raggiunta — punteggio grezzo {punteggioTotale.toFixed(1)} su {sogliaGrezzo} richiesti
+              ✅ Soglia raggiunta — Punteggio Totale {punteggioTotale.toFixed(1)} su {sogliaGrezzo} richiesti
             </p>
           ) : (
             <p className="text-orange-700 font-medium text-sm text-center">
               📌 Ti mancano <strong>{mancantiPunti} punti</strong> per raggiungere il 60/100
               <span className="block text-xs font-normal mt-1 text-orange-600">
-                Punteggio grezzo: {punteggioTotale.toFixed(1)} · Soglia: {sogliaGrezzo} · Corrette: {corrette} · Errate: {errate} (−{(errate * 0.5).toFixed(1)} pt)
+                Punteggio Totale: {punteggioTotale.toFixed(1)} · Soglia: {sogliaGrezzo} · Corrette: {corrette} · Errate: {errate} (−{(errate * 0.5).toFixed(1)} pt)
               </span>
             </p>
           )}

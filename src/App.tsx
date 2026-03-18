@@ -7,6 +7,7 @@ import Risultato from './pages/Risultato'
 import Allenamento from './pages/Allenamento'
 import Paywall from './pages/Paywall'
 import Successo from './pages/Successo'
+import Login from './pages/Login'
 
 const queryClient = new QueryClient()
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/allenamento" element={<Allenamento />} />
           <Route path="/paywall" element={<Paywall />} />
           <Route path="/successo" element={<Successo />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
