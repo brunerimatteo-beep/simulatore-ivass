@@ -122,17 +122,10 @@ export default function Simulazione() {
   const [errore, setErrore] = useState<string | null>(null)
 
   async function avviaSimulazione(tipo: string, nDomande: number) {
-    // Prima
-if (haUsatoTrial()) {
-  navigate('/paywall')
-  return
-}
-
-// Dopo
-if (!puoSimulare() && !paid) {
-  navigate('/paywall')
-  return
-}
+    if (!paid && !puoSimulare()) {
+      navigate('/paywall')
+      return
+    }
 
     setLoading(tipo)
     setErrore(null)

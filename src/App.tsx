@@ -8,6 +8,7 @@ import Allenamento from './pages/Allenamento'
 import Paywall from './pages/Paywall'
 import Successo from './pages/Successo'
 import Login from './pages/Login'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const queryClient = new QueryClient()
 
@@ -17,13 +18,23 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/simulazione" element={<Simulazione />} />
-          <Route path="/esame/:sessioneId" element={<EsameAttivo />} />
-          <Route path="/risultato/:sessioneId" element={<Risultato />} />
-          <Route path="/allenamento" element={<Allenamento />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/paywall" element={<Paywall />} />
           <Route path="/successo" element={<Successo />} />
-          <Route path="/login" element={<Login />} />
+
+          <Route path="/simulazione" element={
+            <ProtectedRoute><Simulazione /></ProtectedRoute>
+          } />
+          <Route path="/esame/:sessioneId" element={
+            <ProtectedRoute><EsameAttivo /></ProtectedRoute>
+          } />
+          <Route path="/risultato/:sessioneId" element={
+            <ProtectedRoute><Risultato /></ProtectedRoute>
+          } />
+          <Route path="/allenamento" element={
+            <ProtectedRoute><Allenamento /></ProtectedRoute>
+          } />
+
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

@@ -1,36 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from './useAuth'
 import { segnaAccessoPagato } from '../lib/trial'
 
 export function usePaid() {
-  const { user } = useAuth()
+  const { user, loading: loadingAuth } = useAuth()
   const [paid, setPaid] = useState(false)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    async function checkPaid() {
-      if (!user) {
-        setLoading(false)
-        return
-      }
-
-      const { data } = await supabase
-        .from('profiles')
-        .select('paid')
-        .eq('id', user.id)
-        .single()
-
-      if (data?.paid) {
-        segnaAccessoPagato()
-        setPaid(true)
-      }
-
+  const checkPaid = useCallback(async () => {
+    if (!user) {
       setLoading(false)
+      return
     }
 
-    checkPaid()
+    setLoading(true)
+    const { data } = await supabase
+      .from('profiles')
+      .select('paid')
+      .eq('id', user.id)
+      .single()
+
+    if (data?.paid) {
+      segnaAccessoPagato()
+      setPaid(true)
+    }
+
+    setLoading(false)
   }, [user])
 
-  return { paid, loading }
+  useEffect(() => {
+    if (!loadingAuth) {
+      checkPaid()
+    }
+  }, [checkPaid, loadingAuth])
+
+  return { paid, loading: loading || loadingAuth, refetch: checkPaid }
 }

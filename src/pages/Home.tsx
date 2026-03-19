@@ -1,30 +1,53 @@
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
+import { usePaid } from '../hooks/usePaid'
 
 export default function Home() {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const { paid } = usePaid()
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
 
-      {/* Header */}
       <header className="border-b border-gray-100 px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
             <span className="text-base font-semibold text-gray-900">SimulatoreIVASS</span>
             <span className="ml-2 text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">2025</span>
           </div>
-          <button
-            onClick={() => navigate('/simulazione')}
-            className="text-sm font-medium text-blue-600 hover:text-blue-700"
-          >
-            Accedi →
-          </button>
+          <div className="flex items-center gap-3">
+            {user ? (
+              <>
+                {paid && (
+                  <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full font-medium">
+                    Premium ✓
+                  </span>
+                )}
+                <span className="text-sm text-gray-500 hidden sm:block">
+                  {user.user_metadata?.full_name || user.email}
+                </span>
+                <button
+                  onClick={() => navigate('/simulazione')}
+                  className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                >
+                  Vai al simulatore →
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => navigate('/login')}
+                className="text-sm font-medium text-blue-600 hover:text-blue-700"
+              >
+                Accedi →
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
       <main className="flex-1 max-w-2xl mx-auto px-6 w-full">
 
-        {/* Hero */}
         <div className="py-14 border-b border-gray-100">
           <h1 className="text-4xl font-bold text-gray-900 leading-tight mb-4">
             L'esame IVASS boccia<br />chi studia senza simulare.
@@ -48,7 +71,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Come funziona */}
         <div id="come-funziona" className="py-12 border-b border-gray-100">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-8">Come funziona</h2>
           <div className="space-y-8">
@@ -82,7 +104,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Moduli */}
         <div className="py-12 border-b border-gray-100">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6">Moduli disponibili</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -91,10 +112,7 @@ export default function Home() {
               { titolo: 'Riassicurativo', dom: '20 domande', min: '30 minuti', color: 'purple' },
               { titolo: 'Completo', dom: '70 domande', min: '105 minuti', color: 'green' },
             ].map(m => (
-              <div
-                key={m.titolo}
-                className="border border-gray-100 rounded-xl p-4 hover:border-gray-200 transition-colors"
-              >
+              <div key={m.titolo} className="border border-gray-100 rounded-xl p-4 hover:border-gray-200 transition-colors">
                 <div className="font-semibold text-gray-900 text-sm mb-2">{m.titolo}</div>
                 <div className="text-xs text-gray-400">{m.dom} · {m.min}</div>
               </div>
@@ -108,7 +126,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Prezzo */}
         <div className="py-12 border-b border-gray-100">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6">Prezzi</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -137,7 +154,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* CTA finale */}
         <div className="py-12 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">Pronto a iniziare?</h2>
           <p className="text-gray-500 mb-6 text-sm">Prima simulazione gratuita. Nessuna carta richiesta.</p>
@@ -151,7 +167,6 @@ export default function Home() {
 
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-gray-100 px-6 py-6">
         <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
           <span>© 2026 SimulatoreIVASS — domande tratte dal database ufficiale IVASS</span>
