@@ -2,9 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useState } from 'react'
 import type { TipoEsame, Domanda } from '../types'
-import { haUsatoTrial, puoSimulare } from '../lib/trial'
 import { useAuth } from '../hooks/useAuth'
-import { usePaid } from '../hooks/usePaid'
 
 const USER_ID_TEST = '00000000-0000-0000-0000-000000000001'
 
@@ -116,17 +114,11 @@ function estraiStratificate(domande: Domanda[], totale: number): Domanda[] {
 
 export default function Simulazione() {
   const { user } = useAuth()
-  const { paid } = usePaid()
   const navigate = useNavigate()
   const [loading, setLoading] = useState<string | null>(null)
   const [errore, setErrore] = useState<string | null>(null)
 
   async function avviaSimulazione(tipo: string, nDomande: number) {
-    if (!paid && !puoSimulare()) {
-      navigate('/paywall')
-      return
-    }
-
     setLoading(tipo)
     setErrore(null)
 
@@ -185,11 +177,6 @@ export default function Simulazione() {
           <button onClick={() => navigate('/')} className="text-blue-600 font-semibold hover:underline">
             ← SimulatoreIVASS
           </button>
-          {haUsatoTrial() && (
-            <span className="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">
-              Trial esaurito — €9,99 per continuare
-            </span>
-          )}
         </div>
       </header>
 
@@ -252,9 +239,6 @@ export default function Simulazione() {
           </div>
         </button>
 
-        <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-800 text-center">
-          💡 <strong>Trial gratuito:</strong> puoi completare 1 simulazione o allenamento gratuitamente. Poi €9,99 per accesso completo.
-        </div>
       </main>
     </div>
   )
