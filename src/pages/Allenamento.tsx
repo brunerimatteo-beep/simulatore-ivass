@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import Footer from '../components/Footer'
 import type { Domanda } from '../types'
 import { useAuth } from '../hooks/useAuth'
 
@@ -304,6 +305,10 @@ export default function Allenamento() {
         </div>
 
       </main>
+
+      <footer className="border-t border-gray-200 bg-white">
+        <Footer />
+      </footer>
     </div>
   )
 }

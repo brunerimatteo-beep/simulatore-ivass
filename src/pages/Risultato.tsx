@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { segnaTrialUsato } from '../lib/trial'
+import Footer from '../components/Footer'
 import type { Domanda } from '../types'
 
 export default function Risultato() {
@@ -220,6 +221,10 @@ export default function Risultato() {
         </div>
 
       </main>
+
+      <footer className="border-t border-gray-200 bg-white">
+        <Footer />
+      </footer>
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { segnaAccessoPagato } from '../lib/trial'
 import { supabase } from '../lib/supabase'
+import Footer from '../components/Footer'
 
 export default function Successo() {
   const navigate = useNavigate()
@@ -35,18 +36,22 @@ export default function Successo() {
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-4xl mb-4">⏳</div>
-          <p className="text-gray-600">Attivazione accesso in corso...</p>
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-4xl mb-4">⏳</div>
+            <p className="text-gray-600">Attivazione accesso in corso...</p>
+          </div>
         </div>
+        <Footer compact />
       </div>
     )
   }
 
   if (errore) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="flex-1 flex items-center justify-center px-6">
         <div className="max-w-md w-full text-center">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10">
             <div className="text-5xl mb-4">⚠️</div>
@@ -62,12 +67,15 @@ export default function Successo() {
             </button>
           </div>
         </div>
+        </div>
+        <Footer compact />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="flex-1 flex items-center justify-center px-6">
       <div className="max-w-md w-full text-center">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10">
           <div className="text-5xl mb-4">🎉</div>
@@ -83,6 +91,8 @@ export default function Successo() {
           </button>
         </div>
       </div>
+      </div>
+      <Footer compact />
     </div>
   )
 }

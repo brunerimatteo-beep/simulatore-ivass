@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import Footer from '../components/Footer'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -47,7 +48,8 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="flex-1 flex items-center justify-center px-6 py-8">
       <div className="max-w-md w-full">
 
         <div className="text-center mb-8">
@@ -142,6 +144,8 @@ export default function Login() {
         </p>
 
       </div>
+      </div>
+      <Footer compact />
     </div>
   )
 }

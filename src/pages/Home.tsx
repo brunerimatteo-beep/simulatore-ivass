@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import Footer from '../components/Footer'
 
 export default function Home() {
   const navigate = useNavigate()
@@ -132,15 +133,7 @@ export default function Home() {
 
       </main>
 
-      <footer className="border-t border-gray-100 px-6 py-6">
-        <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
-          <span>© 2026 SimulatoreIVASS — domande tratte dal database ufficiale IVASS</span>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-gray-600">Privacy Policy</a>
-            <a href="#" className="hover:text-gray-600">Termini e Condizioni</a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
     </div>
   )

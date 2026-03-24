@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import Footer from '../components/Footer'
 import { useState } from 'react'
 import type { TipoEsame, Domanda } from '../types'
 import { useAuth } from '../hooks/useAuth'
@@ -240,6 +241,10 @@ export default function Simulazione() {
         </button>
 
       </main>
+
+      <footer className="border-t border-gray-200 bg-white">
+        <Footer />
+      </footer>
     </div>
   )
 }

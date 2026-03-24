@@ -7,6 +7,7 @@ import Risultato from './pages/Risultato'
 import Allenamento from './pages/Allenamento'
 import Successo from './pages/Successo'
 import Login from './pages/Login'
+import Info from './pages/Info'
 
 const queryClient = new QueryClient()
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/successo" element={<Successo />} />
+          <Route path="/info" element={<Info />} />
 
           <Route path="/simulazione" element={<Simulazione />} />
           <Route path="/esame/:sessioneId" element={<EsameAttivo />} />
