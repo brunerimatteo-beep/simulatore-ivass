@@ -5,7 +5,6 @@ import Simulazione from './pages/Simulazione'
 import EsameAttivo from './pages/EsameAttivo'
 import Risultato from './pages/Risultato'
 import Allenamento from './pages/Allenamento'
-import Successo from './pages/Successo'
 import Login from './pages/Login'
 import Info from './pages/Info'
 
@@ -18,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/successo" element={<Successo />} />
+          <Route path="/successo" element={<Navigate to="/" replace />} />
           <Route path="/info" element={<Info />} />
 
           <Route path="/simulazione" element={<Simulazione />} />
