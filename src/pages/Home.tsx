@@ -53,7 +53,7 @@ export default function Home() {
               onClick={() => navigate('/simulazione')}
               className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-base hover:bg-blue-700 transition-colors"
             >
-              Prova gratis — nessuna carta richiesta
+              Inizia ora
             </button>
             <button
               onClick={() => document.getElementById('come-funziona')?.scrollIntoView({ behavior: 'smooth' })}
@@ -119,42 +119,14 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="py-12 border-b border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6">Prezzi</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="border border-gray-100 rounded-xl p-5">
-              <div className="font-semibold text-gray-900 mb-1">Gratis</div>
-              <div className="text-2xl font-bold text-gray-900 mb-3">€0</div>
-              <ul className="space-y-2 text-sm text-gray-500">
-                <li>✓ 1 simulazione completa</li>
-                <li>✓ 1 allenamento libero</li>
-                <li>✓ Risultato con analisi per materia</li>
-              </ul>
-            </div>
-            <div className="border-2 border-blue-500 rounded-xl p-5 relative">
-              <div className="absolute -top-3 left-4 bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                Consigliato
-              </div>
-              <div className="font-semibold text-gray-900 mb-1">Accesso completo</div>
-              <div className="text-2xl font-bold text-gray-900 mb-3">€9,99 <span className="text-sm font-normal text-gray-400">/ anno</span></div>
-              <ul className="space-y-2 text-sm text-gray-500">
-                <li>✓ Simulazioni illimitate</li>
-                <li>✓ Allenamento illimitato</li>
-                <li>✓ Tutti i moduli</li>
-                <li>✓ Aggiornato ogni anno</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
         <div className="py-12 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">Pronto a iniziare?</h2>
-          <p className="text-gray-500 mb-6 text-sm">Prima simulazione gratuita. Nessuna carta richiesta.</p>
+          <p className="text-gray-500 mb-6 text-sm">Inizia subito a simulare.</p>
           <button
             onClick={() => navigate('/simulazione')}
             className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
           >
-            Inizia gratis →
+            Inizia ora →
           </button>
         </div>
 

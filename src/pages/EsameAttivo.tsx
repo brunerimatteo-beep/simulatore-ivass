@@ -115,7 +115,7 @@ export default function EsameAttivo() {
   }
 
   function abbandona() {
-    if (confirm('Sei sicuro di voler uscire? Il progresso andrà perso e il trial non verrà consumato.')) {
+    if (confirm('Sei sicuro di voler uscire? Il progresso andrà perso.')) {
       navigate('/simulazione')
     }
   }
