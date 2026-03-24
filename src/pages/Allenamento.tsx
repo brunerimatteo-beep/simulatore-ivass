@@ -230,7 +230,15 @@ export default function Allenamento() {
             <label className="block text-sm font-bold text-gray-700 mb-4">
               Numero di domande
             </label>
-            <div className="flex justify-center mb-5">
+            <div className="flex justify-center items-center gap-3 mb-5">
+              <button
+                type="button"
+                onClick={() => setNDomande(Math.max(1, nDomande - 1))}
+                disabled={nDomande <= 1}
+                className="w-12 h-12 flex items-center justify-center rounded-xl border-2 border-blue-200 bg-blue-50 text-blue-600 font-bold text-xl hover:bg-blue-100 hover:border-blue-300 transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-blue-50 disabled:hover:border-blue-200"
+              >
+                −
+              </button>
               <div className="text-center">
                 <input
                   type="number"
@@ -245,10 +253,18 @@ export default function Allenamento() {
                       setNDomande(Math.min(Math.max(1, val), maxDisponibili))
                     }
                   }}
-                  className="w-28 text-center text-4xl font-black text-blue-600 border-2 border-blue-200 rounded-2xl py-3 focus:outline-none focus:border-blue-500 bg-blue-50"
+                  className="w-28 text-center text-4xl font-black text-blue-600 border-2 border-blue-200 rounded-2xl py-3 focus:outline-none focus:border-blue-500 bg-blue-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
                 <div className="text-xs text-gray-400 mt-1">max {maxDisponibili}</div>
               </div>
+              <button
+                type="button"
+                onClick={() => setNDomande(Math.min(maxDisponibili, nDomande + 1))}
+                disabled={nDomande >= maxDisponibili}
+                className="w-12 h-12 flex items-center justify-center rounded-xl border-2 border-blue-200 bg-blue-50 text-blue-600 font-bold text-xl hover:bg-blue-100 hover:border-blue-300 transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-blue-50 disabled:hover:border-blue-200"
+              >
+                +
+              </button>
             </div>
             <input
               type="range"
