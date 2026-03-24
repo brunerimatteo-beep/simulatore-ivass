@@ -1,11 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { usePaid } from '../hooks/usePaid'
 
 export default function Home() {
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { paid } = usePaid()
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -19,11 +17,6 @@ export default function Home() {
           <div className="flex items-center gap-3">
             {user ? (
               <>
-                {paid && (
-                  <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full font-medium">
-                    Premium ✓
-                  </span>
-                )}
                 <span className="text-sm text-gray-500 hidden sm:block">
                   {user.user_metadata?.full_name || user.email}
                 </span>

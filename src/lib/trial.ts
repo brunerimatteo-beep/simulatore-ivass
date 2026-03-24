@@ -21,13 +21,7 @@ export function resetTrial(): void {
 }
 
 export function navigaHome(navigate: (path: string) => void) {
-  if (haPagato()) {
-    navigate('/simulazione')
-  } else if (haUsatoTrial()) {
-    navigate('/paywall')
-  } else {
-    navigate('/')
-  }
+  navigate('/simulazione')
 }
 
 export function puoSimulare(): boolean {

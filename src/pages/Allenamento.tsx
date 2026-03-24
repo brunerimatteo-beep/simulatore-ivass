@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Domanda } from '../types'
-import { haUsatoTrial, puoSimulare } from '../lib/trial'
 import { useAuth } from '../hooks/useAuth'
 
 
@@ -69,10 +68,6 @@ export default function Allenamento() {
   }, [tipo, materiaSelezionata])
 
   async function avviaAllenamento() {
-    if (!puoSimulare()) {
-      navigate('/paywall')
-      return
-    }
     setLoading(true)
     setErrore(null)
     try {
@@ -155,11 +150,6 @@ export default function Allenamento() {
               SimulatoreIVASS
             </button>
           </div>
-          {haUsatoTrial() && !puoSimulare() && (
-            <span className="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">
-              Trial esaurito — €9,99 per continuare
-            </span>
-          )}
         </div>
       </header>
 
@@ -297,9 +287,6 @@ export default function Allenamento() {
           </button>
         </div>
 
-        <div className="mt-4 text-center text-xs text-gray-400 pb-6">
-          💡 Trial gratuito: 1 sessione gratuita. Poi €9,99 per accesso completo.
-        </div>
       </main>
     </div>
   )

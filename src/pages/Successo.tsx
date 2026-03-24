@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { segnaAccessoPagato } from '../lib/trial'
 import { supabase } from '../lib/supabase'
-import { usePaid } from '../hooks/usePaid'
 
 export default function Successo() {
   const navigate = useNavigate()
-  const { refetch } = usePaid()
   const [checking, setChecking] = useState(true)
   const [errore, setErrore] = useState(false)
 
@@ -78,10 +76,7 @@ export default function Successo() {
             Il tuo accesso annuale è attivo. Puoi fare tutte le simulazioni che vuoi.
           </p>
           <button
-            onClick={async () => {
-              await refetch()
-              navigate('/simulazione')
-            }}
+            onClick={() => navigate('/simulazione')}
             className="w-full py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
           >
             Inizia a simulare →
