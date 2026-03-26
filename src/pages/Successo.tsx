@@ -60,10 +60,10 @@ export default function Successo() {
               Il pagamento è stato ricevuto ma non siamo riusciti ad attivare l'accesso. Contattaci e risolviamo subito.
             </p>
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/')}
               className="w-full py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
             >
-              Vai al login →
+              Torna alla home →
             </button>
           </div>
         </div>

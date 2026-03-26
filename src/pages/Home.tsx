@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
 import Footer from '../components/Footer'
 
 export default function Home() {
   const navigate = useNavigate()
-  const { user } = useAuth()
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -14,28 +12,6 @@ export default function Home() {
           <div>
             <span className="text-base font-semibold text-gray-900">SimulatoreIVASS</span>
             <span className="ml-2 text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">2025</span>
-          </div>
-          <div className="flex items-center gap-3">
-            {user ? (
-              <>
-                <span className="text-sm text-gray-500 hidden sm:block">
-                  {user.user_metadata?.full_name || user.email}
-                </span>
-                <button
-                  onClick={() => navigate('/simulazione')}
-                  className="text-sm font-medium text-blue-600 hover:text-blue-700"
-                >
-                  Vai al simulatore →
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => navigate('/login')}
-                className="text-sm font-medium text-blue-600 hover:text-blue-700"
-              >
-                Accedi →
-              </button>
-            )}
           </div>
         </div>
       </header>

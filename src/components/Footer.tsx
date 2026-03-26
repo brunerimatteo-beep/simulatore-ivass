@@ -12,17 +12,13 @@ export default function Footer({ compact = false }: FooterProps) {
         <span className="text-center sm:text-left">
           Progetto indipendente a fini didattici. Quesiti tratti dal Database ufficiale IVASS.
           {' '}
-          <Link to="/info" className="text-blue-600 hover:text-blue-700 hover:underline">
+          <Link to="/note-legali" className="text-blue-600 hover:text-blue-700 hover:underline">
             Note Legali
           </Link>
         </span>
-        {!compact && (
-          <div className="flex gap-4 flex-shrink-0">
-            <a href="#" className="hover:text-gray-600">Privacy Policy</a>
-            <a href="#" className="hover:text-gray-600">Termini e Condizioni</a>
-          </div>
-        )}
-      </div>
+        <a href="/privacy-policy">Privacy Policy</a>
+<a href="/cookie-policy">Cookie Policy</a>
+             </div>
     </footer>
   )
 }

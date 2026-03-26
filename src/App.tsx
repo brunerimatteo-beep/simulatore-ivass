@@ -5,8 +5,10 @@ import Simulazione from './pages/Simulazione'
 import EsameAttivo from './pages/EsameAttivo'
 import Risultato from './pages/Risultato'
 import Allenamento from './pages/Allenamento'
-import Login from './pages/Login'
-import Info from './pages/Info'
+import NoteLegali from './pages/NoteLegali.tsx'
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CookiePolicy from "./pages/CookiePolicy";
+
 
 const queryClient = new QueryClient()
 
@@ -16,14 +18,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/successo" element={<Navigate to="/" replace />} />
-          <Route path="/info" element={<Info />} />
-
+          <Route path="/note-legali" element={<NoteLegali />} />
+          <Route path="/note-legali" element={<NoteLegali />} />
           <Route path="/simulazione" element={<Simulazione />} />
           <Route path="/esame/:sessioneId" element={<EsameAttivo />} />
           <Route path="/risultato/:sessioneId" element={<Risultato />} />
           <Route path="/allenamento" element={<Allenamento />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
