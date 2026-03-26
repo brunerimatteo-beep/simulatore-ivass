@@ -1,9 +1,14 @@
 import React from 'react';
 
-const Footer: React.FC = () => {
+// Questa interfaccia dice a TypeScript che "compact" è un parametro valido (e opzionale)
+interface FooterProps {
+  compact?: boolean;
+}
+
+const Footer: React.FC<FooterProps> = ({ compact }) => {
   return (
     <footer style={{ 
-      padding: '2.5rem 1rem', 
+      padding: compact ? '1.5rem 1rem' : '2.5rem 1rem', // Se compact è vero, riduce lo spazio
       textAlign: 'center', 
       backgroundColor: '#f9f9f9', 
       borderTop: '1px solid #eee',
@@ -11,7 +16,7 @@ const Footer: React.FC = () => {
     }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         
-        {/* TUTELA LEGALE - Citazione obbligatoria Pagina 2 PDF */}
+        {/* TUTELA LEGALE - Citazione Fonte IVASS Pagina 2 PDF */}
         <div style={{ 
           backgroundColor: '#fff', 
           border: '1px solid #ddd', 
@@ -25,15 +30,13 @@ const Footer: React.FC = () => {
         }}>
           <strong>Note sulla proprietà intellettuale:</strong><br />
           Tutti i diritti riservati. È consentita la riproduzione a fini didattici e non commerciali, 
-          a condizione che venga citata la fonte 
-        (Fonte: IVASS - Database Quesiti RUI).
+          a condizione che venga citata la fonte (Fonte: IVASS - Database Quesiti RUI).
         </div>
 
         <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '15px' }}>
           © {new Date().getFullYear()} <strong>Simulatore IVASS</strong>
         </p>
         
-        {/* LINK IUBENDA - Questi riattivano il banner e le policy */}
         <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
           <a 
             href="https://www.iubenda.com/privacy-policy/27743271" 
