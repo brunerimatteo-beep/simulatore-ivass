@@ -8,7 +8,7 @@ import Allenamento from './pages/Allenamento'
 import NoteLegali from './pages/NoteLegali.tsx'
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
-
+import DonationWidget from './components/DonationWidget'; // Importa il nuovo widget
 
 const queryClient = new QueryClient()
 
@@ -16,11 +16,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        {/* Il widget è fuori da Routes: rimane fisso a sinistra in ogni pagina */}
+        <DonationWidget /> 
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/successo" element={<Navigate to="/" replace />} />
-          <Route path="/note-legali" element={<NoteLegali />} />
           <Route path="/note-legali" element={<NoteLegali />} />
           <Route path="/simulazione" element={<Simulazione />} />
           <Route path="/esame/:sessioneId" element={<EsameAttivo />} />

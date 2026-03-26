@@ -11,7 +11,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
             <span className="text-base font-semibold text-gray-900">SimulatoreIVASS</span>
-            <span className="ml-2 text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">2025</span>
+            <span className="ml-2 text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium"></span>
           </div>
         </div>
       </header>

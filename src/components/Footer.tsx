@@ -1,70 +1,53 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-// Definiamo l'interfaccia per accettare la prop 'compact' che i file Login e Successo stanno cercando di passare
-interface FooterProps {
-  compact?: boolean;
-}
-
-const Footer: React.FC<FooterProps> = ({ compact }) => {
-  useEffect(() => {
-    // 1. Script base per i link Privacy/Cookie Policy (embed)
-    const scriptBase = document.createElement("script");
-    scriptBase.src = "https://cdn.iubenda.com/iubenda.js";
-    scriptBase.async = true;
-    document.body.appendChild(scriptBase);
-
-    // 2. Script per il Widget/Cookie Solution (quello col codice 0f9c176a...)
-    const scriptWidget = document.createElement("script");
-    scriptWidget.src = "https://embeds.iubenda.com/widgets/0f9c176a-6a2d-4c4a-b257-c51914b7b2fb.js";
-    scriptWidget.async = true;
-    document.body.appendChild(scriptWidget);
-
-    // Pulizia dei tag quando il componente viene rimosso
-    return () => {
-      if (document.body.contains(scriptBase)) document.body.removeChild(scriptBase);
-      if (document.body.contains(scriptWidget)) document.body.removeChild(scriptWidget);
-    };
-  }, []);
-
-  // Definiamo uno stile di base che reagisce alla prop 'compact'
-  const footerStyle: React.CSSProperties = {
-    padding: compact ? '1rem' : '2rem 1rem',
-    textAlign: 'center',
-    marginTop: 'auto',
-    backgroundColor: '#f8f9fa', // Grigio molto chiaro, cambialo se preferisci
-    borderTop: '1px solid #e9ecef',
-    fontSize: compact ? '0.8rem' : '0.9rem'
-  };
-
+const Footer: React.FC = () => {
   return (
-    <footer style={footerStyle}>
-      <div className="container">
-        <p style={{ marginBottom: '10px', color: '#6c757d' }}>
-          © {new Date().getFullYear()} Simulatore IVASS. Tutti i diritti riservati.
+    <footer style={{ 
+      padding: '2.5rem 1rem', 
+      textAlign: 'center', 
+      backgroundColor: '#f9f9f9', 
+      borderTop: '1px solid #eee',
+      marginTop: 'auto'
+    }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        
+        {/* TUTELA LEGALE - Citazione obbligatoria Pagina 2 PDF */}
+        <div style={{ 
+          backgroundColor: '#fff', 
+          border: '1px solid #ddd', 
+          padding: '15px', 
+          borderRadius: '8px', 
+          marginBottom: '20px',
+          fontSize: '0.8rem',
+          textAlign: 'left',
+          color: '#444',
+          lineHeight: '1.4'
+        }}>
+          <strong>Note sulla proprietà intellettuale:</strong><br />
+          Tutti i diritti riservati. È consentita la riproduzione a fini didattici e non commerciali, 
+          a condizione che venga citata la fonte 
+        (Fonte: IVASS - Database Quesiti RUI).
+        </div>
+
+        <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '15px' }}>
+          © {new Date().getFullYear()} <strong>Simulatore IVASS</strong>
         </p>
         
-        <div style={{ 
-          display: 'flex', 
-          gap: '20px', 
-          justifyContent: 'center', 
-          flexWrap: 'wrap' 
-        }}>
-          {/* Link Privacy Policy */}
+        {/* LINK IUBENDA - Questi riattivano il banner e le policy */}
+        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
           <a 
             href="https://www.iubenda.com/privacy-policy/27743271" 
             className="iubenda-white iubenda-noiframe iubenda-embed" 
             title="Privacy Policy"
-            style={{ textDecoration: 'none', color: '#007bff' }}
+            style={{ fontSize: '0.8rem', color: '#007bff', textDecoration: 'none' }}
           >
             Privacy Policy
           </a>
-
-          {/* Link Cookie Policy */}
           <a 
             href="https://www.iubenda.com/privacy-policy/27743271/cookie-policy" 
             className="iubenda-white iubenda-noiframe iubenda-embed" 
             title="Cookie Policy"
-            style={{ textDecoration: 'none', color: '#007bff' }}
+            style={{ fontSize: '0.8rem', color: '#007bff', textDecoration: 'none' }}
           >
             Cookie Policy
           </a>
