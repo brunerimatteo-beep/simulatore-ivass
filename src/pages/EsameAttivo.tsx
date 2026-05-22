@@ -57,18 +57,24 @@ export default function EsameAttivo() {
     return () => clearInterval(interval)
   }, [secondiRimasti, terminato, isAllenamento])
 
-  const concludiEsame = useCallback(async () => {
+  const concludiEsame = useCallback(async (ultimaRisposta?: { domandaId: number; risposta: string | null }) => {
     if (terminato) return
     setTerminato(true)
 
-    const tutteLeRisposte = domande.map(d => ({
-      sessione_id: sessioneId,
-      user_id: authUser?.id ?? USER_ID_TEST,
-      domanda_id: d.id,
-      risposta_data: risposteDate[d.id] ?? null,
-      is_corretta: risposteDate[d.id] === d.risposta_corretta,
-      punti: risposteDate[d.id] === d.risposta_corretta ? 1 : 0,
-    }))
+    const tutteLeRisposte = domande.map(d => {
+      let risposta = risposteDate[d.id]
+      if (ultimaRisposta && d.id === ultimaRisposta.domandaId) {
+        risposta = ultimaRisposta.risposta
+      }
+      return {
+        sessione_id: sessioneId,
+        user_id: authUser?.id ?? USER_ID_TEST,
+        domanda_id: d.id,
+        risposta_data: risposta ?? null,
+        is_corretta: risposta === d.risposta_corretta,
+        punti: risposta === d.risposta_corretta ? 1 : 0,
+      }
+    })
 
     await supabase.from('risposte').insert(tutteLeRisposte)
 
@@ -101,7 +107,7 @@ export default function EsameAttivo() {
     if (indice + 1 < totale) {
       setIndice(i => i + 1)
     } else {
-      concludiEsame()
+      concludiEsame({ domandaId: domandaCorrente.id, risposta: sceltaCorrente })
     }
   }
 
@@ -110,7 +116,7 @@ export default function EsameAttivo() {
     if (indice + 1 < totale) {
       setIndice(i => i + 1)
     } else {
-      concludiEsame()
+      concludiEsame({ domandaId: domandaCorrente.id, risposta: null })
     }
   }
 
